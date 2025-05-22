@@ -31,7 +31,7 @@ When you first access Jenkins, you are prompted for an initial admin password. T
 ### Step 5: Jenkins Setup Complete  
 ![5](./img/5%20jenkins%20created%20successfully%20.png)  
 **Explanation:**  
-This confirms Jenkins is set up and ready for use. You can now create jobs and configure pipelines.
+This image confirms Jenkins is set up and ready for use. You can now create jobs and configure pipelines.
 
 
 
@@ -63,25 +63,28 @@ Trigger a manual build to test your job configuration and ensure Jenkins can fet
 Set up automated triggers (like polling the repository or webhook) so Jenkins builds automatically when changes are pushed.
 
 ### View Build Status  
-
 ![6](./img/06%20status%20showing%20.png)  
-
 **Explanation:**  
 Check the status of your builds. Jenkins provides visual feedback on build success or failure.
 
 ### Add Webhook for Automation  
 ![6](./img/06%20webhook%20use%20.png)  
-
 **Explanation:**  
 Integrate webhooks from your version control system to trigger Jenkins jobs automatically on code changes.
 
 ### Webhook Added Confirmation  
-
 ![7](./img/07%20webhook%20added.png)  
-
 **Explanation:**  
 This image confirms that the webhook has been successfully added, enabling automated CI/CD workflows.
 
+### Push and Changes  
+![8](./img/08%20push%20.png)  
+**Explanation:**  
+This image shows code being pushed to the repository, which can trigger Jenkins jobs if webhooks are set up.
+
+![9](./img/09%20chnages%20.png)  
+**Explanation:**  
+This image displays the changes detected by Jenkins after a push, confirming the CI/CD pipeline is responding to code updates.
 
 
 
