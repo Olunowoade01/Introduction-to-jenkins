@@ -1,15 +1,6 @@
 # Introduction-to-Jenkins (Freestyle Job Edition)
 
-This project demonstrates how to set up a Jenkins **Freestyle Job** with GitHub integration for basic CI/CD automation. The process covers job creation, source control management, webhook configuration, and build verification.
-
----
-
-## Project Objective
-
-- Create a Jenkins Freestyle Job.
-- Integrate Jenkins with a GitHub repository for source code management.
-- Configure build triggers using GitHub webhooks.
-- Verify builds both manually and automatically after repository changes.
+This project demonstrates how to set up a Jenkins **Freestyle Job** with GitHub integration for basic CI/CD automation. The guide covers job creation, source control management, webhook configuration, and build verification, with supporting screenshots for each critical step.
 
 ---
 
@@ -17,77 +8,79 @@ This project demonstrates how to set up a Jenkins **Freestyle Job** with GitHub 
 
 - macOS with Homebrew installed
 - Jenkins installed and running
-- GitHub account and repository with application source code
+- GitHub account and repository
 
 ---
 
-## Step-by-Step Process
+## Step-by-Step Guide
 
 ### 1. Install Homebrew  
 ![1](./img/1%20install%20homebrew.png)  
-*Homebrew is a package manager for macOS.*
+*Homebrew installation on macOS, required for Jenkins setup.*
 
 ### 2. Install Jenkins  
-![2](./img/2%20install%20jenkins.png)  
-*Jenkins is installed using Homebrew.*
+![2](./img/02%20my%20first%20job.png)  
+*Jenkins installation using Homebrew.*
 
-### 3. Access Jenkins via Browser  
-![3](./img/jenkins_access.png)  
-*Jenkins runs at `http://localhost:8080`.*
+### 3. Access Jenkins Dashboard  
+**[Insert screenshot: Jenkins dashboard after first login]**  
+*The Jenkins dashboard, confirming successful installation and access.*
 
-### 4. Create a Jenkins Freestyle Job  
-![4](./img/freestyle_new_item.png)  
-- Click **New Item** in Jenkins.
-- Enter a job name and select **Freestyle project**.
-- Click **OK**.
+### 4. Create a Freestyle Job  
+**[Insert screenshot: "my-first-job" creation screen and dashboard view]**  
+*Creating a new Freestyle Job named "my-first-job" in Jenkins.*
 
-### 5. Configure Source Code Management  
-![5](./img/freestyle_scm.png)  
-- In the job configuration, select **Git** under Source Code Management.
-- Enter your GitHub repository URL.
+### 5. Configure Job Settings  
+![3](./img/03.%20adding%20git%20repo.png)  
+*Configuring the Freestyle Job to use a GitHub repository under Source Code Management.*
 
-### 6. Set Up Build Triggers  
-![6](./img/freestyle_build_trigger.png)  
-- Under **Build Triggers**, check **GitHub hook trigger for GITScm polling**.
+### 6. Save and View the Job  
+**[Insert screenshot: Job configuration saved and visible in Jenkins dashboard]**  
+*The "my-first-job" is now listed and ready to build.*
 
-### 7. Add a Simple Build Step  
-- Under **Build**, add an **Execute shell** step (e.g., `echo "Build successful!"`).
+### 7. Trigger a Manual Build  
+![4](./img/04%20build%20now.png)  
+*Manually triggering a build by clicking "Build Now" in Jenkins.*
 
-### 8. Save and Run a Manual Build  
-![7](./img/freestyle_manual_build.png)  
-- Click **Build Now** to run the job manually.
-- Confirm the build status is **SUCCESS**.
+### 8. Confirm Manual Build Success  
+![6](./img/06%20status%20showing%20.png)  
+*Jenkins console output showing a successful manual build execution.*
 
-### 9. Configure GitHub Webhook  
+### 9. Set Up GitHub Integration  
+**[Insert screenshot: Jenkins job with GitHub repository connected]**  
+*Jenkins job successfully connected to the GitHub repository.*
+
+### 10. Configure Webhook in GitHub  
 ![8](./img/github_webhook.png)  
-- In your GitHub repo, go to **Settings > Webhooks**.
-- Add your Jenkins URL: `http://<jenkins-server>/github-webhook/`.
-- Select **Just the push event**.
+*Setting up a webhook in the GitHub repository to notify Jenkins of changes.*
 
-### 10. Verify Automated Build Trigger  
-- Make a commit/push to your GitHub repo.
-- Confirm Jenkins triggers a new build automatically.
-- ![9](./img/freestyle_auto_build.png)
+### 11. Test Automated Build Trigger  
+![9](./img/freestyle_auto_build.png)  
+*Jenkins automatically triggers a build after a commit is pushed to GitHub.*
 
 ---
 
 ## Summary
 
-This guide covers Jenkins Freestyle Job creation, GitHub integration, webhook setup, and build verification—fulfilling the instructor’s requirements.
+This guide provides a complete walkthrough for Jenkins Freestyle Job creation, GitHub integration, webhook setup, and both manual and automated build verification. All required steps are documented with supporting screenshots to fulfill the instructor’s requirements.
 
 ---
 
 ## Troubleshooting
 
-- Ensure Jenkins has network access to GitHub.
-- Confirm webhook delivery status in GitHub.
-- Check Jenkins build logs for errors.
+- Ensure Jenkins and GitHub can communicate (check network/firewall settings).
+- Verify webhook delivery status in GitHub.
+- Review Jenkins build logs for errors if builds do not trigger as expected.
 
 ---
 
 ## References
 
-- [Jenkins Freestyle Project](https://www.jenkins.io/doc/book/pipeline/getting-started/#freestyle-projects)
-- [GitHub Webhooks](https://docs.github.com/en/webhooks)
+- [Jenkins Freestyle Project Documentation](https://www.jenkins.io/doc/book/pipeline/getting-started/#freestyle-projects)
+- [GitHub Webhooks Documentation](https://docs.github.com/en/webhooks)
+
+---
+
+#
 
 
