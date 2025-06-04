@@ -1,14 +1,15 @@
-# Introduction-to-Jenkins
+# Introduction-to-Jenkins (Freestyle Job Edition)
 
-This project demonstrates how to set up a Jenkins Declarative Pipeline with Docker integration for CI/CD automation. The pipeline automates building, testing, and deploying a web application inside a Docker container.
+This project demonstrates how to set up a Jenkins **Freestyle Job** with GitHub integration for basic CI/CD automation. The process covers job creation, source control management, webhook configuration, and build verification.
 
 ---
 
 ## Project Objective
 
-- Implement a Jenkins Declarative Pipeline job that automates code cloning, Docker image building, and container deployment.
-- Integrate Docker into the workflow, including Dockerfile creation and container management.
-- Ensure the deployed application is accessible via a web browser on port 8081.
+- Create a Jenkins Freestyle Job.
+- Integrate Jenkins with a GitHub repository for source code management.
+- Configure build triggers using GitHub webhooks.
+- Verify builds both manually and automatically after repository changes.
 
 ---
 
@@ -16,8 +17,7 @@ This project demonstrates how to set up a Jenkins Declarative Pipeline with Dock
 
 - macOS with Homebrew installed
 - Jenkins installed and running
-- Docker installed and running
-- GitHub repository with application source code and Dockerfile
+- GitHub account and repository with application source code
 
 ---
 
@@ -25,128 +25,69 @@ This project demonstrates how to set up a Jenkins Declarative Pipeline with Dock
 
 ### 1. Install Homebrew  
 ![1](./img/1%20install%20homebrew.png)  
-*Homebrew is a package manager for macOS, used to install Jenkins and Docker.*
+*Homebrew is a package manager for macOS.*
 
 ### 2. Install Jenkins  
 ![2](./img/2%20install%20jenkins.png)  
 *Jenkins is installed using Homebrew.*
 
-### 3. Install Docker  
-![docker](./img/docker_install.png)  
-*Install Docker Desktop for Mac using Homebrew or from [Docker's website](https://www.docker.com/products/docker-desktop/).*
+### 3. Access Jenkins via Browser  
+![3](./img/jenkins_access.png)  
+*Jenkins runs at `http://localhost:8080`.*
 
-```sh
-brew install --cask docker
-```
+### 4. Create a Jenkins Freestyle Job  
+![4](./img/freestyle_new_item.png)  
+- Click **New Item** in Jenkins.
+- Enter a job name and select **Freestyle project**.
+- Click **OK**.
 
-### 4. Access Jenkins via Browser  
-![3](./img/4%20jenkins%20access%20via%20browser.png)  
-*Jenkins runs as a service at `http://localhost:8080`.*
+### 5. Configure Source Code Management  
+![5](./img/freestyle_scm.png)  
+- In the job configuration, select **Git** under Source Code Management.
+- Enter your GitHub repository URL.
 
-### 5. Unlock Jenkins and Complete Setup  
-![4](./img/4%20jenkins%20access%20via%20browser.png)  
-*Enter the initial admin password and complete setup.*
+### 6. Set Up Build Triggers  
+![6](./img/freestyle_build_trigger.png)  
+- Under **Build Triggers**, check **GitHub hook trigger for GITScm polling**.
 
----
+### 7. Add a Simple Build Step  
+- Under **Build**, add an **Execute shell** step (e.g., `echo "Build successful!"`).
 
-## Jenkins Declarative Pipeline with Docker Integration
+### 8. Save and Run a Manual Build  
+![7](./img/freestyle_manual_build.png)  
+- Click **Build Now** to run the job manually.
+- Confirm the build status is **SUCCESS**.
 
-### 6. Create a New Pipeline Job  
-![pipeline](./img/pipeline_new_item.png)  
-*Select "Pipeline" as the job type.*
+### 9. Configure GitHub Webhook  
+![8](./img/github_webhook.png)  
+- In your GitHub repo, go to **Settings > Webhooks**.
+- Add your Jenkins URL: `http://<jenkins-server>/github-webhook/`.
+- Select **Just the push event**.
 
-### 7. Add a Dockerfile to Your Repository
-
-Create a `Dockerfile` in your project root:
-
-```dockerfile
-# filepath: Dockerfile
-FROM node:18
-WORKDIR /app
-COPY . .
-RUN npm install
-EXPOSE 8081
-CMD ["npm", "start"]
-```
-
-### 8. Configure the Pipeline Script
-
-In the Jenkins job, use the following Declarative Pipeline script:
-
-```groovy
-// Jenkinsfile
-pipeline {
-    agent any
-
-    stages {
-        stage('Clone Repository') {
-            steps {
-                git 'https://github.com/your-username/your-repo.git'
-            }
-        }
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    dockerImage = docker.build("myapp:latest")
-                }
-            }
-        }
-        stage('Run Docker Container') {
-            steps {
-                script {
-                    sh 'docker rm -f myapp || true'
-                    sh 'docker run -d --name myapp -p 8081:8081 myapp:latest'
-                }
-            }
-        }
-    }
-    post {
-        success {
-            echo 'Application deployed successfully!'
-        }
-        failure {
-            echo 'Deployment failed.'
-        }
-    }
-}
-```
-
-### 9. Open Port 8081
-
-If running on a cloud VM, update your security group to allow inbound traffic on port 8081.  
-*Screenshot: Security group rule for port 8081.*
-
-### 10. Access the Application
-
-Visit `http://localhost:8081` (or your server's public IP:8081) to verify the application is running.  
-*Screenshot: Application running in browser.*
-
----
-
-## Webhook Integration
-
-- Push your Jenkinsfile and Dockerfile to your GitHub repository.
-- Set up a webhook in GitHub to trigger Jenkins builds on code push.
+### 10. Verify Automated Build Trigger  
+- Make a commit/push to your GitHub repo.
+- Confirm Jenkins triggers a new build automatically.
+- ![9](./img/freestyle_auto_build.png)
 
 ---
 
 ## Summary
 
-This guide covers Jenkins Declarative Pipeline creation, Docker integration, automated build and deployment, and application access verification. All steps are illustrated with screenshots and clear explanations to ensure alignment with project requirements.
+This guide covers Jenkins Freestyle Job creation, GitHub integration, webhook setup, and build verification—fulfilling the instructor’s requirements.
 
 ---
 
 ## Troubleshooting
 
-- Ensure Docker is running before pipeline execution.
-- Check Jenkins user permissions for Docker.
-- Review Jenkins build logs for errors.
+- Ensure Jenkins has network access to GitHub.
+- Confirm webhook delivery status in GitHub.
+- Check Jenkins build logs for errors.
 
 ---
 
 ## References
 
-- [Jenkins Pipeline Documentation](https://www.jenkins.io/doc/book/pipeline/)
-- [Docker Documentation](https://docs.docker.com/)
+- [Jenkins Freestyle Project](https://www.jenkins.io/doc/book/pipeline/getting-started/#freestyle-projects)
+- [GitHub Webhooks](https://docs.github.com/en/webhooks)
 
 
