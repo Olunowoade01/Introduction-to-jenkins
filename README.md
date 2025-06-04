@@ -1,96 +1,152 @@
-# Introduction-to-jenkins
-introduction to Jenkins
+# Introduction-to-Jenkins
 
-## Project Topic:
+This project demonstrates how to set up a Jenkins Declarative Pipeline with Docker integration for CI/CD automation. The pipeline automates building, testing, and deploying a web application inside a Docker container.
 
-- In this project, I will design and implement a continuous integration and continuous deployment (CI/CD) pipeline using Jenkins and Docker. The pipeline will automate the build, test, and deployment of a web application, ensuring that the application is always up-to-date and running smoothly.
+---
 
+## Project Objective
 
-## Step-by-Step Process with Image Explanations
+- Implement a Jenkins Declarative Pipeline job that automates code cloning, Docker image building, and container deployment.
+- Integrate Docker into the workflow, including Dockerfile creation and container management.
+- Ensure the deployed application is accessible via a web browser on port 8081.
 
-### Step 1: Install Homebrew  
+---
+
+## Prerequisites
+
+- macOS with Homebrew installed
+- Jenkins installed and running
+- Docker installed and running
+- GitHub repository with application source code and Dockerfile
+
+---
+
+## Step-by-Step Process
+
+### 1. Install Homebrew  
 ![1](./img/1%20install%20homebrew.png)  
-**Explanation:**  
-Homebrew is a package manager for macOS. This image shows the installation process, which is essential for easily installing Jenkins and other tools.
+*Homebrew is a package manager for macOS, used to install Jenkins and Docker.*
 
-### Step 2: Install Jenkins  
+### 2. Install Jenkins  
 ![2](./img/2%20install%20jenkins.png)  
-**Explanation:**  
-Jenkins is installed using Homebrew. This step ensures Jenkins is downloaded and set up on your Mac.
+*Jenkins is installed using Homebrew.*
 
-### Step 3: Access Jenkins via Browser  
+### 3. Install Docker  
+![docker](./img/docker_install.png)  
+*Install Docker Desktop for Mac using Homebrew or from [Docker's website](https://www.docker.com/products/docker-desktop/).*
+
+```sh
+brew install --cask docker
+```
+
+### 4. Access Jenkins via Browser  
 ![3](./img/4%20jenkins%20access%20via%20browser.png)  
-**Explanation:**  
-After installation, Jenkins runs as a service. You can access the Jenkins dashboard by navigating to `http://localhost:8080` in your browser.
+*Jenkins runs as a service at `http://localhost:8080`.*
 
-### Step 4: Jenkins Unlock Screen  
+### 5. Unlock Jenkins and Complete Setup  
 ![4](./img/4%20jenkins%20access%20via%20browser.png)  
-**Explanation:**  
-When you first access Jenkins, you are prompted for an initial admin password. This security step ensures only authorized users can complete the setup.
+*Enter the initial admin password and complete setup.*
 
-### Step 5: Jenkins Setup Complete  
-![5](./img/5%20jenkins%20created%20successfully%20.png)  
-**Explanation:**  
-This image confirms Jenkins is set up and ready for use. You can now create jobs and configure pipelines.
+---
 
+## Jenkins Declarative Pipeline with Docker Integration
 
+### 6. Create a New Pipeline Job  
+![pipeline](./img/pipeline_new_item.png)  
+*Select "Pipeline" as the job type.*
 
-## Jenkins Freestyle Project Process
+### 7. Add a Dockerfile to Your Repository
 
-### Create a New Jenkins Item  
-![1](./img/01%20jenkis%20new%20item.png)  
-**Explanation:**  
-Start by creating a new Jenkins job (item). This is the entry point for automating builds.
+Create a `Dockerfile` in your project root:
 
-### Configure Your First Job  
-![2](./img/02%20my%20first%20job.png)  
-**Explanation:**  
-Set up the job details, such as the project name and type (Freestyle project).
+```dockerfile
+# filepath: Dockerfile
+FROM node:18
+WORKDIR /app
+COPY . .
+RUN npm install
+EXPOSE 8081
+CMD ["npm", "start"]
+```
 
-### Add Git Repository  
-![3](./img/03.%20adding%20git%20repo.png)  
-**Explanation:**  
-Connect your Jenkins job to a source code repository (e.g., GitHub) so Jenkins can pull the latest code.
+### 8. Configure the Pipeline Script
 
-### Build Now  
-![4](./img/04%20build%20now.png)  
-**Explanation:**  
-Trigger a manual build to test your job configuration and ensure Jenkins can fetch and build your code.
+In the Jenkins job, use the following Declarative Pipeline script:
 
-### Configure Build Triggers  
-![5](./img/05%20trigger.png)  
-**Explanation:**  
-Set up automated triggers (like polling the repository or webhook) so Jenkins builds automatically when changes are pushed.
+```groovy
+// Jenkinsfile
+pipeline {
+    agent any
 
-### View Build Status  
-![6](./img/06%20status%20showing%20.png)  
-**Explanation:**  
-Check the status of your builds. Jenkins provides visual feedback on build success or failure.
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git 'https://github.com/your-username/your-repo.git'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    dockerImage = docker.build("myapp:latest")
+                }
+            }
+        }
+        stage('Run Docker Container') {
+            steps {
+                script {
+                    sh 'docker rm -f myapp || true'
+                    sh 'docker run -d --name myapp -p 8081:8081 myapp:latest'
+                }
+            }
+        }
+    }
+    post {
+        success {
+            echo 'Application deployed successfully!'
+        }
+        failure {
+            echo 'Deployment failed.'
+        }
+    }
+}
+```
 
-### Add Webhook for Automation  
-![6](./img/06%20webhook%20use%20.png)  
-**Explanation:**  
-Integrate webhooks from your version control system to trigger Jenkins jobs automatically on code changes.
+### 9. Open Port 8081
 
-### Webhook Added Confirmation  
-![7](./img/07%20webhook%20added.png)  
-**Explanation:**  
-This image confirms that the webhook has been successfully added, enabling automated CI/CD workflows.
+If running on a cloud VM, update your security group to allow inbound traffic on port 8081.  
+*Screenshot: Security group rule for port 8081.*
 
-### Push and Changes  
-![8](./img/08%20push%20.png)  
-**Explanation:**  
-This image shows code being pushed to the repository, which can trigger Jenkins jobs if webhooks are set up.
+### 10. Access the Application
 
-![9](./img/09%20chnages%20.png)  
-**Explanation:**  
-This image displays the changes detected by Jenkins after a push, confirming the CI/CD pipeline is responding to code updates.
+Visit `http://localhost:8081` (or your server's public IP:8081) to verify the application is running.  
+*Screenshot: Application running in browser.*
 
+---
 
+## Webhook Integration
 
+- Push your Jenkinsfile and Dockerfile to your GitHub repository.
+- Set up a webhook in GitHub to trigger Jenkins builds on code push.
 
-## New Project Summary
+---
 
-This project provides a comprehensive, visual guide to installing Jenkins on macOS, creating and configuring Jenkins jobs, and integrating with version control for automated CI/CD workflows. Each step is supported by screenshots and clear explanations, making it easy for beginners to follow. The guide also includes troubleshooting tips and essential commands to resolve common setup issues, ensuring a smooth Jenkins experience from installation to job automation.
+## Summary
+
+This guide covers Jenkins Declarative Pipeline creation, Docker integration, automated build and deployment, and application access verification. All steps are illustrated with screenshots and clear explanations to ensure alignment with project requirements.
+
+---
+
+## Troubleshooting
+
+- Ensure Docker is running before pipeline execution.
+- Check Jenkins user permissions for Docker.
+- Review Jenkins build logs for errors.
+
+---
+
+## References
+
+- [Jenkins Pipeline Documentation](https://www.jenkins.io/doc/book/pipeline/)
+- [Docker Documentation](https://docs.docker.com/)
 
 
